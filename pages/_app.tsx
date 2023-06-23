@@ -3,10 +3,12 @@ import '@/styles/globals.css'
 
 const Root = ({ Component, children } : { Component: any, children: any }) => {
     return (
-        <div className='bg-slate-100'>
+        <>
             <Navbar />
-            <Component {...children} />
-        </div>
+            <div className={`bg-slate-100 sm:px-4 md:px-16 lg:px-48 xl:px-60`}>
+                <Component {...children} />
+            </div>
+        </>
     )
 }
 
