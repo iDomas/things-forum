@@ -40,7 +40,7 @@ const Navbar = ({ }) => {
     const [open, setOpen] = useState(false);
 
     return (
-        <nav className={`flex filter drop-shadow-md bg-white px-4 py-4 h-20 items-center`}>
+        <nav className={`absolute w-screen flex filter drop-shadow-md bg-white px-4 py-4 h-20 items-center`}>
             <MobileNav open={open} setOpen={setOpen}/>
             <div className="w-3/12 flex items-center">
                 <Link href={"/"}>
