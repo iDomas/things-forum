@@ -1,47 +1,79 @@
+import { AuthState } from "@/lib/enum/AuthState";
+import { AppUser } from "@/lib/model/AppUser";
 import Link from "next/link";
 import { useState } from "react";
+import AvatarComponent from "./Avatar";
+import { Button } from "./ui/button";
 
-const NavLink = ({ to, children }:  { to: string, children: any}) => {
+const NavLink = ({ to, linkText, children }:  { to: string, linkText?: string, children?: any }) => {
     return (
-        <Link href={to}>
-            <span className={`mx-4`}>
-                {children}
-            </span>
-        </Link>
+        <>
+            {
+                linkText && !children && (
+                    <Link href={to} className={`mx-4`}>
+                        { linkText }
+                    </Link>
+                )
+            }
+            {
+                !linkText && children && (
+                    <Link href={to}>
+                        { children }
+                    </Link>
+                )
+            }
+        </>
     )
 }
 
-const MobileNav = ({ open, setOpen }:  { open: any, setOpen: any}) => {
+const MobileNav = ({ open, setOpen, user }:  { open: any, setOpen: any, user: AppUser | undefined}) => {
+
     return (
         <div className={`absolute top-0 left-0 h-screen w-screen bg-white transform ${open ? "-translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out filter drop-shadow-md`}>
             <div className="flex items-center justify-center filter drop-shadow-md bg-white h-20">
                 <Link href={"/"}>
-                    <span className="text-xl font-semi-bold">THINGS</span>
+                    <span className="text-2xl font-semi-bold">THINGS</span>
                 </Link>
             </div>
-            <div className="flex flex-col ml-4">
-                <Link href={"/dashboard"}>
-                    <span className="text-xl font-medium my-4">
+            <div className="flex flex-col ml-4 h-50">
+                <div className={`flex justify-center items-center mt-8`}>
+                    { user && user.authState === AuthState.LOGGED_IN && (
+                            <AvatarComponent user={user} />
+                        )
+                    }
+                </div>
+               
+                <Link href={"/dashboard"} className={`my-2`}>
+                    <span className="text-2xl font-light my-4">
                         Dashboard
                     </span>
                 </Link>
-                <Link href={"/Forum"}>
-                    <span className="text-xl font-medium my-4">
+                <Link href={"/Forum"} className={`my-2`}>
+                    <span className="text-2xl font-light my-4">
                         Forum
                     </span>
                 </Link>
+
+                { user?.authState === AuthState.LOGGED_OUT && (
+                    <Link href={"/login"} className={`my-2`}>
+                        <span className="text-2xl font-light my-4">
+                            Login/Sign Up
+                        </span>
+                    </Link>                    
+                    )
+                }
             </div>
         </div>
     )
 }
 
 
-const Navbar = ({ }) => {
+const Navbar = ({ user } : { user: AppUser | undefined }) => {
     const [open, setOpen] = useState(false);
 
     return (
         <nav className={`absolute w-screen flex filter drop-shadow-md bg-white px-4 py-4 h-20 items-center`}>
-            <MobileNav open={open} setOpen={setOpen}/>
+            <MobileNav open={open} setOpen={setOpen} user={user}/>
             <div className="w-3/12 flex items-center">
                 <Link href={"/"}>
                     <span className="text-xl font-semi-bold">THINGS</span>
@@ -57,13 +89,20 @@ const Navbar = ({ }) => {
                     <span className={`h-1 w-full bg-black rounded-lg transform transition duration-300 ease-in-out ${open ? "-rotate-45 -translate-y-3.5" : ""}`} />
                 </div>
 
-                <div className="hidden md:flex">
-                    <NavLink to="/dashboard">
-                        Dashboard
-                    </NavLink>
-                    <NavLink to="/dashboard">
-                        Forum
-                    </NavLink>
+                <div className="hidden md:flex items-center">
+                    <NavLink to="/dashboard" linkText={`Dashboard`}></NavLink>
+                    <NavLink to="/forum" linkText='Forum'></NavLink>
+                    <span className="mx-4"></span>
+                    { user && user.authState === AuthState.LOGGED_IN && (
+                            <AvatarComponent user={user} />
+                        )
+                    }
+                    { user?.authState === AuthState.LOGGED_OUT && (
+                            <NavLink to={`/login`}>
+                                <Button>Login/Sign Up</Button>
+                            </NavLink>                        
+                        )
+                    }
                 </div>
             </div>
         </nav>
@@ -71,3 +110,5 @@ const Navbar = ({ }) => {
 }
 
 export default Navbar;
+export { NavLink };
+
