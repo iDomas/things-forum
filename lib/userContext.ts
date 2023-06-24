@@ -10,6 +10,7 @@ const useUserContext = create<AppUser>(
                     photoURL: 'https://github.com/shadcn.png',
                     uid: '123',
                     authState: AuthState.LOGGED_OUT,
+                    postIds: [],
                     signOut: () => signOut(),
                     setUser: (by: AppUser | undefined) => set((state) => by ? by : resetUser(state))
             })
@@ -23,6 +24,7 @@ const resetUser = (state: AppUser): AppUser => {
         photoURL: '',
         uid: '',
         authState: AuthState.LOGGED_OUT,
+        postIds: []
     }
 }
 

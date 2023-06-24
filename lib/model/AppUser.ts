@@ -7,6 +7,7 @@ export interface AppUser {
     photoURL: string;
     uid: string;
     authState: AuthState;
+    postIds: string[];
     signOut: () => void;
     setUser: (user: AppUser | undefined) => void
 }

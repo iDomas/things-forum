@@ -3,9 +3,10 @@ import { auth } from '@/lib/firebase';
 import { resetUser, useUserContext } from '@/lib/userContext';
 import '@/styles/globals.css'
 import { onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import firebase from 'firebase/compat'
 import { AuthState } from '@/lib/enum/AuthState';
+import { insertNewUser } from '@/lib/database';
 
 const Root = ({ Component, children } : { Component: any, children: any }) => {
     const userContext = useUserContext();
@@ -21,6 +22,15 @@ const Root = ({ Component, children } : { Component: any, children: any }) => {
                         uid: user.uid || '',
                         authState: AuthState.LOGGED_IN
                     })
+                insertNewUser({ 
+                    user: {
+                        uid: user.uid,
+                        displayName: user.displayName || 'Unknown',
+                        photoURL: user.photoURL || '',
+                        postIds: []
+                    },
+                    userContext: userContext
+                });
             } else {
                 userContext.setUser(resetUser(userContext));
             }
@@ -31,7 +41,7 @@ const Root = ({ Component, children } : { Component: any, children: any }) => {
     return (
         <>
             <Navbar user={userContext}/>
-            <div className={`bg-slate-100 sm:px-4 md:px-16 lg:px-48 xl:px-60`}>
+            <div className={`bg-slate-50 sm:px-4 md:px-16 lg:px-48 xl:px-60`}>
                 <Component {...children} />
             </div>
         </>

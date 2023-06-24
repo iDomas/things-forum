@@ -12,14 +12,14 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
-const firestore = firebase.firestore();
+const db = firebase.firestore();
 const functions = firebase.functions();
 const storage = firebase.storage();
 
 export {
     auth,
     googleAuthProvider,
-    firestore,
+    db,
     functions,
     storage
 }
