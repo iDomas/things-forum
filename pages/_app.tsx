@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import firebase from 'firebase/compat'
 import { AuthState } from '@/lib/enum/AuthState';
 import { insertNewUser } from '@/lib/database';
+import { Toaster } from '@/components/ui/toaster';
 
 const Root = ({ Component, children } : { Component: any, children: any }) => {
     const userContext = useUserContext();
@@ -41,8 +42,9 @@ const Root = ({ Component, children } : { Component: any, children: any }) => {
     return (
         <>
             <Navbar user={userContext}/>
-            <div className={`bg-slate-50 sm:px-4 md:px-16 lg:px-48 xl:px-60`}>
+            <div className={`bg-slate-50 px-4 sm:px-16 md:px-48 lg:px-60 xl:px-80`}>
                 <Component {...children} />
+                <Toaster />
             </div>
         </>
     )

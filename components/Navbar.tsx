@@ -42,7 +42,11 @@ const MobileNav = ({ open, setOpen, user }:  { open: any, setOpen: any, user: Ap
                         )
                     }
                 </div>
-               
+                <Link href={"/write-a-thing"} className={`my-2`}>
+                    <span className="text-2xl font-light my-4">
+                        Write A Thing
+                    </span>
+                </Link>
                 <Link href={"/dashboard"} className={`my-2`}>
                     <span className="text-2xl font-light my-4">
                         Dashboard
@@ -90,6 +94,7 @@ const Navbar = ({ user } : { user: AppUser | undefined }) => {
                 </div>
 
                 <div className="hidden md:flex items-center">
+                    <NavLink to="/write-a-thing" linkText={`Write a Thing`}></NavLink>
                     <NavLink to="/dashboard" linkText={`Dashboard`}></NavLink>
                     <NavLink to="/forum" linkText='Forum'></NavLink>
                     <span className="mx-4"></span>
