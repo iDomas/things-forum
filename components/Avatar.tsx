@@ -1,6 +1,5 @@
 import { AppUser } from "@/lib/model/AppUser";
 import { useUserContext } from "@/lib/userContext";
-import { useEffect } from "react";
 import { NavLink } from "./Navbar";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";

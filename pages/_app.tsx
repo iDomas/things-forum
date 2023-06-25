@@ -4,39 +4,62 @@ import { resetUser, useUserContext } from '@/lib/userContext';
 import '@/styles/globals.css'
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
-import firebase from 'firebase/compat'
 import { AuthState } from '@/lib/enum/AuthState';
-import { insertNewUser } from '@/lib/database';
 import { Toaster } from '@/components/ui/toaster';
+import firebase from 'firebase/compat';
+import { getPostIds, initUser } from '@/lib/database';
+import { AuthModel } from '@/lib/auth/AuthModel';
 
 const Root = ({ Component, children } : { Component: any, children: any }) => {
     const userContext = useUserContext();
     
     useEffect(() => {
-        const subscriber = onAuthStateChanged(auth, (user) => {
-            if (user) {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            const resolveAuthState = new Promise<AuthModel>((resolve, reject) => {
+                if (!user) {
+                    userContext.setUser(resetUser(userContext));
+                    reject("Unauthorized");
+                } 
+                resolve({
+                    user: user as firebase.User,
+                    unsubscribe: unsubscribe
+                })
+            })
+
+            resolveAuthState.then((authModel) => {
+                const user = authModel.user as firebase.User;
                 userContext.setUser({
-                        ...userContext,
-                        firebaseUser: user as firebase.User,
+                    ...userContext,
+                    firebaseUser: user as firebase.User,
+                    displayName: user.displayName || '',
+                    photoURL: user.photoURL || '',
+                    uid: user.uid || '',
+                    authState: AuthState.LOGGED_IN
+                })
+                return authModel;
+            }).then((authModel) => {
+                const user = authModel.user as firebase.User;
+                initUser({
+                    user: {
                         displayName: user.displayName || '',
                         photoURL: user.photoURL || '',
-                        uid: user.uid || '',
-                        authState: AuthState.LOGGED_IN
-                    })
-                insertNewUser({ 
-                    user: {
-                        uid: user.uid,
-                        displayName: user.displayName || 'Unknown',
-                        photoURL: user.photoURL || '',
-                        postIds: []
+                        uid: user.uid || ''
                     },
-                    userContext: userContext
-                });
-            } else {
-                userContext.setUser(resetUser(userContext));
-            }
-        });
-        return () => subscriber();
+                    userUId: user.uid || ''
+                })
+                return authModel;
+            }).then((authModel) => {
+                const user = authModel.user as firebase.User;
+                console.log(user.uid);
+                
+                getPostIds({ userUId: user.uid, userContext: userContext })
+                return authModel;
+            }).catch((error) => {
+                console.log(error);
+            });
+        })
+
+        return () => unsubscribe();
     }, [])
 
     return (

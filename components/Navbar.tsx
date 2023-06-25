@@ -104,7 +104,7 @@ const Navbar = ({ user } : { user: AppUser | undefined }) => {
                     }
                     { user?.authState === AuthState.LOGGED_OUT && (
                             <NavLink to={`/login`}>
-                                <Button>Login/Sign Up</Button>
+                                <Button>Login / Sign Up</Button>
                             </NavLink>                        
                         )
                     }

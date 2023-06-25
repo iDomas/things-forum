@@ -6,9 +6,9 @@ import { AppUser } from "./model/AppUser";
 const useUserContext = create<AppUser>(
             (set) => ({
                     firebaseUser: undefined,
-                    displayName: 'Domas',
+                    displayName: 'Unknown',
                     photoURL: 'https://github.com/shadcn.png',
-                    uid: '123',
+                    uid: '',
                     authState: AuthState.LOGGED_OUT,
                     postIds: [],
                     signOut: () => signOut(),
