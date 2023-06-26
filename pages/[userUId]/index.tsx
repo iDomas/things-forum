@@ -2,6 +2,7 @@ import { useUserContext } from "@/lib/userContext";
 import { useRouter } from "next/router";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { AuthState } from "@/lib/enum/AuthState";
+import ProfileImageComponent from "@/components/ProfileImage";
 
 const UserProfilePage = ({ }) => {
     const userContext = useUserContext();
@@ -24,9 +25,9 @@ const UserLoggedIn = ({ }) => {
 
     return (
         <main className={`flex flex-col justify-center items-center h-screen`}>
-            <Avatar className="h-40 w-40 mb-12">
-                <AvatarImage src={userContext.photoURL}></AvatarImage>
-            </Avatar>
+            <div className="h-40 w-40 mb-12">
+                <ProfileImageComponent photoURL={userContext.photoURL} />
+            </div>
 
             <p className="mb-4">Welcome!</p>
             <h1 className="text-4xl font-semibold">{userContext.displayName}</h1>

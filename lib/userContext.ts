@@ -12,7 +12,8 @@ const useUserContext = create<AppUser>(
                     authState: AuthState.LOGGED_OUT,
                     postIds: [],
                     signOut: () => signOut(),
-                    setUser: (by: any | undefined) => set((state) => by ? ({...state, ...by}) : resetUser())
+                    setUser: (by: any | undefined) =>
+                        set((state) => by ? ({...state, ...by}) : resetUser())
             })
     );
 

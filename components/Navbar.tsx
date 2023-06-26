@@ -27,39 +27,42 @@ const NavLink = ({ to, linkText, children }:  { to: string, linkText?: string, c
 }
 
 const MobileNav = ({ open, setOpen, user }:  { open: any, setOpen: any, user: AppUser | undefined}) => {
-
+    const close = () => setOpen(false);
     return (
         <div className={`absolute top-0 left-0 h-screen w-screen bg-white transform ${open ? "-translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out filter drop-shadow-md`}>
             <div className="flex items-center justify-center filter drop-shadow-md bg-white h-20">
-                <Link href={"/"}>
+                <Link href={"/"} onClick={close}>
                     <span className="text-2xl font-semi-bold">THINGS</span>
                 </Link>
             </div>
             <div className="flex flex-col ml-4 h-50">
-                <div className={`flex justify-center items-center mt-8`}>
+                <div className={`flex justify-center items-center mt-8`} >
                     { user && user.authState === AuthState.LOGGED_IN && (
                             <AvatarComponent user={user} />
                         )
                     }
                 </div>
-                <Link href={"/write-a-thing"} className={`my-2`}>
-                    <span className="text-2xl font-light my-4">
-                        Write A Thing
-                    </span>
-                </Link>
-                <Link href={"/dashboard"} className={`my-2`}>
+                { user && user.authState === AuthState.LOGGED_IN && (
+                        <Link href={"/write-a-thing"} className={`my-2`}  onClick={close}>
+                            <span className="text-2xl font-light my-4">
+                                Write A Thing
+                            </span>
+                        </Link>
+                    )
+                }
+                <Link href={"/dashboard"} className={`my-2`}  onClick={close}>
                     <span className="text-2xl font-light my-4">
                         Dashboard
                     </span>
                 </Link>
-                <Link href={"/Forum"} className={`my-2`}>
+                <Link href={"/Forum"} className={`my-2`}  onClick={close}>
                     <span className="text-2xl font-light my-4">
                         Forum
                     </span>
                 </Link>
 
                 { user?.authState === AuthState.LOGGED_OUT && (
-                    <Link href={"/login"} className={`my-2`}>
+                    <Link href={"/login"} className={`my-2`}  onClick={close}>
                         <span className="text-2xl font-light my-4">
                             Login/Sign Up
                         </span>
@@ -77,7 +80,7 @@ const Navbar = ({ user } : { user: AppUser | undefined }) => {
 
     return (
         <nav className={`absolute w-screen flex filter drop-shadow-md bg-white px-4 py-4 h-20 items-center`}>
-            <MobileNav open={open} setOpen={setOpen} user={user}/>
+            <MobileNav open={open} user={user} setOpen={setOpen}/>
             <div className="w-3/12 flex items-center">
                 <Link href={"/"}>
                     <span className="text-xl font-semi-bold">THINGS</span>

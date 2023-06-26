@@ -6,7 +6,6 @@ export interface DbPost extends Post {
 }
 
 export interface Post {
-    id: string;
     title: string;
     content: string;
     topics: string[];

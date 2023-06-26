@@ -14,9 +14,9 @@ import LoadingComponent from '@/components/util/loadingComponent';
 const Root = ({ Component, children } : { Component: any, children: any }) => {
     const userContext = useUserContext();
     const loadingContext = useLoadingContext();
+    const [canInit, setCanInit] = useState<boolean>(false);
 
     useEffect(() => {
-
         const setUserContext = ({ user } : { user: firebase.User | undefined })  => {
             if (user) {
                 userContext.setUser({
@@ -26,9 +26,11 @@ const Root = ({ Component, children } : { Component: any, children: any }) => {
                     uid: user.uid || '',
                     authState: AuthState.LOGGED_IN
                 })
+                setCanInit(true);
             } else {
                 userContext.setUser(resetUser());
                 console.log('user logged out');
+                setCanInit(false);
             }
         }
 
@@ -42,24 +44,22 @@ const Root = ({ Component, children } : { Component: any, children: any }) => {
     }, [])
 
     useEffect(() => {
-
-        const initInFirestore = async (user: firebase.User) => {
-            await initUser({
-                user: {
-                    displayName: user.displayName || '',
-                    photoURL: user.photoURL || '',
-                    uid: user.uid || '',
-                    postIds: []
-                },
-                userUId: user.uid || ''
-            })
-        }
-
-        const getIds = async (userUId: string) => {
-            const { postIds } = await getPostIds({ userUId });
-            userContext.setUser({
-                postIds: postIds
-            })
+        if (canInit) {
+            const initInFirestore = async (user: firebase.User) => {
+                await initUser({
+                    user: {
+                        displayName: user.displayName || '',
+                        photoURL: user.photoURL || '',
+                        uid: user.uid || '',
+                        postIds: []
+                    },
+                    userUId: user.uid || ''
+                })
+            }
+    
+            if (userContext.firebaseUser) {
+                initInFirestore(userContext.firebaseUser);
+            }
         }
     }, [])
 
