@@ -1,6 +1,6 @@
-import { UserDetails } from "../AppUser";
+import { UserPostDetails } from "../AppUser";
 
-export interface DatabaseUser extends UserDetails {
+export interface DatabaseUser extends UserPostDetails {
     displayName: string;
     photoURL: string;
     uid: string;

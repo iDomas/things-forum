@@ -1,7 +1,7 @@
 import { auth, googleAuthProvider } from "../firebase"
-import { AppUser } from "../model/AppUser";
+import { UserDetails } from "../model/AppUser";
 
-const login = ({ userContext } : { userContext: AppUser }): void => {
+const login = ({ }): void => {
     auth.signInWithPopup(googleAuthProvider);
 }
 

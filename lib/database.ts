@@ -6,11 +6,19 @@ import { createIdFromTitle } from "./utils";
 import { serverTimestamp } from "firebase/firestore";
 import firebase from 'firebase/compat/app';
 
-const initUser = ({ user, userUId } : { user: DatabaseUser, userUId: string }) => {
+const initUser = async ({ user, userUId } : { user: DatabaseUser, userUId: string }) => {
     if (userUId.length === 0) {
         throw new Error("User has no userUId");
     }
-    db.collection('users').doc(userUId).set(user, { merge: true}); 
+    const ref = db.collection('users').doc(userUId); 
+    await ref.get().then((doc) => {
+        if (!doc.exists) {
+            console.log('setting user')
+            ref.set(user);
+        } else {
+            console.log('user exists')
+        }
+    })
 }
 
 const insertNewPost = ( { post, userContext } : { post: Post, userContext: AppUser }): Promise<void> => {
@@ -33,23 +41,18 @@ const insertNewPost = ( { post, userContext } : { post: Post, userContext: AppUs
     return batch.commit();
 }
 
-const getPostIds = ({ userUId, userContext } : { userUId: string, userContext: AppUser }) => {
-    if (userUId.length === 0) {
-        return;
+const getPostIds = async ({ userUId } : { userUId: string }) => {
+    const usersDoc = await db.collection('users').doc(userUId).get();
+
+    let postIds: string[] = [];
+    if (usersDoc.exists) {
+        const usersData = usersDoc.data();
+        if (usersData) {
+            postIds = usersData.postIds;
+        }
     }
 
-    console.log(userContext);
-    
-    const postsRef = db.collection(`/users`).doc(userUId);
-    postsRef.get().then((doc) => {
-        if (doc.exists && doc.data() !== undefined && doc.data()?.postIds !== undefined) {
-            // userContext.postIds = doc.data()?.postIds;
-            userContext.setUser({
-                ...userContext,
-                postIds: doc.data()?.postIds,
-            });
-        }
-    });
+    return { postIds }
 }
 
 export { 

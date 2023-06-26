@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { insertNewPost } from "@/lib/database";
 import { Post } from "@/lib/model/db/Post";
 import { toast } from "@/components/ui/use-toast";
+import { useLoadingContext } from "@/lib/util/loadingContext";
 
 const WriteAThingPage = ({ }) => {
     const userContext = useUserContext();
@@ -55,6 +56,7 @@ const FormSchema = z.object({
 
 const FormComponent = ({ }) => {
     const userContext = useUserContext();
+    const loadingContext = useLoadingContext();
 
     const form = useForm<z.infer<typeof FormSchema>>({
         defaultValues: {
@@ -65,6 +67,7 @@ const FormComponent = ({ }) => {
     });
 
     const onSubmit = (data: z.infer<typeof FormSchema>) => {
+        loadingContext.setLoading(true)
         const post: Post = {
             title: data.title,
             content: data.content,
@@ -83,6 +86,8 @@ const FormComponent = ({ }) => {
                     title: "Error!",
                     description: "Your post could not be submitted.",
                 })
+            }).finally(() => {
+                loadingContext.setLoading(false)
             })
     }
 

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { signOut } from "./auth/userLoginLogout";
 import { AuthState } from "./enum/AuthState";
-import { AppUser } from "./model/AppUser";
+import { AppUser, UserDetails } from "./model/AppUser";
 
 const useUserContext = create<AppUser>(
             (set) => ({
@@ -12,13 +12,14 @@ const useUserContext = create<AppUser>(
                     authState: AuthState.LOGGED_OUT,
                     postIds: [],
                     signOut: () => signOut(),
-                    setUser: (by: AppUser | undefined) => set((state) => by ? by : resetUser(state))
+                    setUser: (by: any | undefined) => set((state) => by ? ({...state, ...by}) : resetUser())
             })
     );
 
-const resetUser = (state: AppUser): AppUser => {
+const resetUser = (): UserDetails => {
+    console.log('resetUser');
+    
     return {
-        ...state,
         firebaseUser: undefined,
         displayName: '',
         photoURL: '',
