@@ -6,10 +6,15 @@ import { useEffect, useState } from 'react';
 import { AuthState } from '@/lib/enum/AuthState';
 import { Toaster } from '@/components/ui/toaster';
 import firebase from 'firebase/compat';
-import { getPostIds, initUser } from '@/lib/database';
+import { initUser } from '@/lib/database';
 import { useLoadingContext } from '@/lib/util/loadingContext';
 import LoadingComponent from '@/components/util/loadingComponent';
+import { Metadata } from 'next';
 
+export const metadata: Metadata = {
+    title: "Things Forum",
+    description: "A forum for things.",
+}
 
 const Root = ({ Component, children } : { Component: any, children: any }) => {
     const userContext = useUserContext();
@@ -37,8 +42,6 @@ const Root = ({ Component, children } : { Component: any, children: any }) => {
         loadingContext.setLoading(true);
         auth.onAuthStateChanged((user) => {
             setUserContext({ user: user || undefined })
-            console.log(userContext);
-            
             loadingContext.setLoading(false);
         })
     }, [])

@@ -5,12 +5,14 @@ import { useForm } from "react-hook-form";
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { insertNewPost } from "@/lib/database";
 import { Post } from "@/lib/model/db/Post";
 import { toast } from "@/components/ui/use-toast";
 import { useLoadingContext } from "@/lib/util/loadingContext";
+import { useRef, useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 const WriteAThingPage = ({ }) => {
     const userContext = useUserContext();
@@ -57,6 +59,7 @@ const FormSchema = z.object({
 const FormComponent = ({ }) => {
     const userContext = useUserContext();
     const loadingContext = useLoadingContext();
+    const [mdEditorValue, setMdEditorValue] = useState('');
 
     const form = useForm<z.infer<typeof FormSchema>>({
         defaultValues: {
@@ -91,40 +94,54 @@ const FormComponent = ({ }) => {
             })
     }
 
-    return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FormField 
-                    control={form.control}
-                    name={"title"}
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Title</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Title" {...field}/>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )} />
-                <FormField 
-                    control={form.control}
-                    name={"content"}
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Content</FormLabel>
-                            <FormControl>
-                                <Textarea 
-                                    placeholder="Content" 
-                                    className="h-24 min-h-fit max-h-80"
-                                    {...field}/>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )} />
+    let contentRef: any = undefined;
 
-                    <Button type="submit" className="mt-4">Submit</Button>
-            </form>
-        </Form>
+    const handleFormChangeForMD = () => {
+        console.log(contentRef)
+        setMdEditorValue(contentRef || '')
+    }
+
+    return (
+        <>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} onChange={() => handleFormChangeForMD()}>
+                    <FormField 
+                        control={form.control}
+                        name={"title"}
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Title</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Title" {...field}/>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                        <FormField
+                            control={form.control}
+                            name={`content`}
+                            render={({ field, formState, fieldState }) => {
+                                contentRef = field.value;
+                                return (
+                                    <FormItem>
+                                        <FormLabel>Content</FormLabel>
+                                        <FormControl>
+                                        <Textarea 
+                                            
+                                            placeholder="Content" 
+                                            className="h-24 min-h-fit max-h-80"
+                                            {...field} />
+                                    </FormControl>
+                                    </FormItem>
+                                )}}
+                            />
+                        <Button type="submit" className="mt-4">Submit</Button>
+                </form>                
+            </Form>
+            <ReactMarkdown>
+                {mdEditorValue}
+            </ReactMarkdown>
+        </>
     )
 }
 
