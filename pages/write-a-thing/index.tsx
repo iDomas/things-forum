@@ -97,14 +97,14 @@ const FormComponent = ({ }) => {
 
     let contentRef: any = undefined;
 
-    const handleFormChangeForMD = () => {
-        setMdEditorValue(contentRef || '')
+    const handleFormChangeForMD = (value: string) => {
+        setMdEditorValue(value)
     }
 
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} onChange={() => handleFormChangeForMD()}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
                     <FormField 
                         control={form.control}
                         name={"title"}
@@ -127,18 +127,23 @@ const FormComponent = ({ }) => {
                                         <FormLabel>Content</FormLabel>
                                         <FormControl>
                                         <Textarea 
-                                            
+                                            ref={field.ref}
                                             placeholder="Content" 
                                             className="h-24 min-h-fit max-h-80"
-                                            {...field} />
+                                            onChange={(e) => { field.onChange(e); handleFormChangeForMD(e.target.value) }}
+                                            onBlur={field.onBlur}
+                                            value={field.value}
+                                            name={field.name}
+                                        />
                                     </FormControl>
                                     </FormItem>
                                 )}}
                             />
-                        <Button type="submit" className="mt-4">Submit</Button>
+                        <Button type="submit" className={`float-right mt-4`}>Submit</Button>
                 </form>                
             </Form>
             <div>
+                <h1 className={`text-2xl mt-4`}>Preview</h1>
                 <MarkdownComponent content={mdEditorValue} />
             </div>
         </>
