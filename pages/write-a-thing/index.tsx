@@ -13,6 +13,7 @@ import { useLoadingContext } from "@/lib/util/loadingContext";
 import { useRef, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import MarkdownComponent from "@/components/Markdown";
 
 const WriteAThingPage = ({ }) => {
     const userContext = useUserContext();
@@ -97,7 +98,6 @@ const FormComponent = ({ }) => {
     let contentRef: any = undefined;
 
     const handleFormChangeForMD = () => {
-        console.log(contentRef)
         setMdEditorValue(contentRef || '')
     }
 
@@ -138,9 +138,9 @@ const FormComponent = ({ }) => {
                         <Button type="submit" className="mt-4">Submit</Button>
                 </form>                
             </Form>
-            <ReactMarkdown>
-                {mdEditorValue}
-            </ReactMarkdown>
+            <div>
+                <MarkdownComponent content={mdEditorValue} />
+            </div>
         </>
     )
 }
