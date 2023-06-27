@@ -10,9 +10,8 @@ import { insertNewPost } from "@/lib/database";
 import { Post } from "@/lib/model/db/Post";
 import { toast } from "@/components/ui/use-toast";
 import { useLoadingContext } from "@/lib/util/loadingContext";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import MarkdownComponent from "@/components/Markdown";
 
 const WriteAThingPage = ({ }) => {
@@ -77,6 +76,7 @@ const FormComponent = ({ }) => {
             content: data.content,
             topics: []
         }
+
         insertNewPost({ post, userContext })
             .then(() => {
                 form.reset();

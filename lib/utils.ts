@@ -6,7 +6,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 const createIdFromTitle = (title: string): string => {
-    return title.toLowerCase().replace(/\s/g, "-")
+  const strs = title.split(/\s+/);
+  const re = /[^A-Za-z0-9]/g;
+  const santiziedStrs = strs.map((str) => str.replace(re, '')).filter((str) => str.length > 0);
+  console.log(santiziedStrs);
+  return santiziedStrs.join('-').toLowerCase();
 }
 
 export { createIdFromTitle }
