@@ -19,24 +19,26 @@ const WriteAThingPage = ({ }) => {
 
     return (
         userContext.authState === AuthState.LOGGED_IN 
-            ? <UserLoggedInComponent /> 
+            ? <WriteAThingComponent /> 
             : <UserNotLoggedInComponent />
     )
 }
 
-const UserLoggedInComponent = ({ }) => {
+const WriteAThingComponent = ({ }) => {
     return (
-        <main className={`flex flex-col justify-center h-screen`}>
-            <h2 className="text-3xl font-bold tracking-tight">Write a Thing</h2>
-            <span className="border-b-2 border-slate-200 my-4"></span>
-            <FormComponent />
+        <main className={`flex m-auto h-full container`}>
+            <div className={`flex flex-col items-center md:px-4 lg:px-16 xl:px-24 h-full w-full`}>
+                <h2 className="text-3xl font-bold tracking-tight">Write a Thing</h2>
+                <span className="border-b-2 border-slate-200 my-4"></span>
+                <FormComponent />
+            </div>
         </main>
     )
 }
 
 const UserNotLoggedInComponent = ({ }) => {
     return (
-        <main className={`flex flex-col justify-center h-screen`}>
+        <main className={`flex flex-col justify-center h-full px-4 sm:px-16 md:px-48 lg:px-60 xl:px-96 2xl:px-96`}>
             <h2 className="text-3xl font-bold tracking-tight">You must be logged in!</h2>
             <p>Only logged in users can write a thing.</p>
         </main>
@@ -105,45 +107,48 @@ const FormComponent = ({ }) => {
 
     return (
         <>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <FormField 
-                        control={form.control}
-                        name={"title"}
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Title</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Title" {...field}/>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )} />
-                        <FormField
+            <div className="w-full">
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <FormField 
                             control={form.control}
-                            name={`content`}
-                            render={({ field, formState, fieldState }) => {
-                                return (
-                                    <FormItem>
-                                        <FormLabel>Content</FormLabel>
-                                        <FormControl>
-                                        <Textarea 
-                                            ref={field.ref}
-                                            placeholder="Content" 
-                                            className="h-24 min-h-fit max-h-80"
-                                            onChange={(e) => { field.onChange(e); handleFormChangeForMD(e.target.value) }}
-                                            onBlur={field.onBlur}
-                                            value={field.value}
-                                            name={field.name}
-                                        />
+                            name={"title"}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Title</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Title" {...field} className="w-full"/>
                                     </FormControl>
-                                    </FormItem>
-                                )}}
-                            />
-                        <Button type="submit" className={`float-right mt-4`}>Submit</Button>
-                </form>                
-            </Form>
-            <div>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+                            <FormField
+                                control={form.control}
+                                name={`content`}
+                                render={({ field, formState, fieldState }) => {
+                                    return (
+                                        <FormItem>
+                                            <FormLabel>Content</FormLabel>
+                                            <FormControl>
+                                                <Textarea 
+                                                    ref={field.ref}
+                                                    placeholder="Content" 
+                                                    className="h-24 min-h-fit max-h-80 w-full"
+                                                    onChange={(e) => { field.onChange(e); handleFormChangeForMD(e.target.value) }}
+                                                    onBlur={field.onBlur}
+                                                    value={field.value}
+                                                    name={field.name}
+                                                    />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}}
+                                    />
+                            <Button type="submit" className={`float-right mt-4`}>Submit</Button>
+                    </form>                
+                </Form>
+            </div>
+            <div className="w-full flex flex-col justify-center">
                 <h1 className={`text-2xl mt-4`}>Preview</h1>
                 <MarkdownComponent content={mdEditorValue} />
             </div>

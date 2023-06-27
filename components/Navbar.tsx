@@ -79,7 +79,7 @@ const Navbar = ({ user } : { user: AppUser | undefined }) => {
     const [open, setOpen] = useState(false);
 
     return (
-        <nav className={`absolute w-screen flex filter drop-shadow-md bg-white px-4 py-4 h-20 items-center`}>
+        <nav className={`absolute w-full flex filter drop-shadow-md bg-white px-4 py-4 h-20 items-center`}>
             <MobileNav open={open} user={user} setOpen={setOpen}/>
             <div className="w-3/12 flex items-center">
                 <Link href={"/"}>
@@ -97,8 +97,15 @@ const Navbar = ({ user } : { user: AppUser | undefined }) => {
                 </div>
 
                 <div className="hidden md:flex items-center">
-                    <NavLink to="/write-a-thing" linkText={`Write a Thing`}></NavLink>
-                    <NavLink to="/dashboard" linkText={`Dashboard`}></NavLink>
+                    { user && user.authState === AuthState.LOGGED_IN && (
+                            <NavLink to="/write-a-thing" linkText={`Write a Thing`}></NavLink>
+                        )
+                    }
+                    { user && user.authState === AuthState.LOGGED_IN && (
+                        <NavLink to="/dashboard" linkText={`Dashboard`}></NavLink>
+                        )
+                    }
+                    
                     <NavLink to="/forum" linkText='Forum'></NavLink>
                     <span className="mx-4"></span>
                     { user && user.authState === AuthState.LOGGED_IN && (

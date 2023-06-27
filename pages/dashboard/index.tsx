@@ -34,15 +34,19 @@ const PersonalisedDashboardPage = ({ }) => {
 
 
     return (
-        <main className={`flex flex-col justify-end h-screen`}>
-            <h2 className="text-3xl font-bold tracking-tight mb-4">Personalised Dashboard</h2>
-            <div className={`flex flex-col  items-center h-5/6`}>
-                <div className={`scale-smooth overflow-y-auto no-scrollbar h-full`}>
-                    { posts.length > 0
-                        && posts.map((post) => 
-                            <PostCardComponent key={post.id} post={post}/>
-                        )
-                    }
+        <main className={`flex h-full container m-auto`}>
+            <div className={`pt-8`}>
+                <div className={`sm:px-16`}>
+                    <h2 className="text-3xl font-bold tracking-tight mb-4">Personalised <br /> Dashboard</h2>
+                </div>
+                <div className={`flex flex-col items-center md:px-4 lg:px-16 xl:px-24 h-full`}>
+                    <div className={`h-full`}>
+                        { posts.length > 0
+                            && posts.map((post) => 
+                                <PostCardComponent key={post.id} post={post}/>
+                            )
+                        }
+                    </div>
                 </div>
             </div>
         </main>
@@ -51,7 +55,7 @@ const PersonalisedDashboardPage = ({ }) => {
 
 const AnonymousDashboardPage = ({ }) => {
     return (
-        <main className={`flex flex-col justify-center h-screen`}>
+        <main className={`flex flex-col justify-center h-full px-4 sm:px-16 md:px-48 lg:px-60 xl:px-80`}>
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
         </main>
     )

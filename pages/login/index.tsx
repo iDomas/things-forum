@@ -19,7 +19,7 @@ const LoginPage = () => {
 
 const LoginComponent = ({ }) => {
     return (
-        <main className={`flex flex-col justify-center h-screen`}>
+        <main className={`flex flex-col justify-center h-full my-auto px-4 sm:px-16 md:px-48 lg:px-60 xl:px-80`}>
             <h1 className="text-2xl">Login Page</h1>
             <p>We use Google auth, with same button login and sign up.</p>
             <Button onClick={login}>
@@ -31,7 +31,7 @@ const LoginComponent = ({ }) => {
 
 const LogoutComponent = () => {
     return (
-        <main className={`flex flex-col justify-center h-screen`}>
+        <main className={`flex flex-col justify-center h-full my-auto px-4 sm:px-16 md:px-48 lg:px-60 xl:px-80`}>
             <h1 className="text-2xl">Sign Out</h1>
             <Button onClick={() => signOut()}>
                 Log Out

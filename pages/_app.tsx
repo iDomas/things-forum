@@ -15,13 +15,15 @@ const Root = ({ Component, children } : { Component: any, children: any }) => {
 
     return (
         <>
-            <Navbar user={userContext} />
-            <LoadingComponent />
-            <div className={`bg-slate-50 px-4 sm:px-16 md:px-48 lg:px-60 xl:px-80`}>
-                <Component {...children} />
-                <span className='z-20'>
-                    <Toaster />
-                </span>
+            <div className={`bg-slate-50  h-full`}>
+                <Navbar user={userContext} />
+                <LoadingComponent />
+                <div className={`h-full pt-20 flex flex-col min-h-screen`}>
+                    <Component {...children}/>
+                    <span className='z-20'>
+                        <Toaster />
+                    </span>
+                </div>
             </div>
         </>
     )
