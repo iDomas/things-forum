@@ -1,5 +1,5 @@
 import { AuthState } from "@/lib/enum/AuthState";
-import { useUserContext } from "@/lib/userContext";
+import { useUserData } from "@/lib/userContext";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 }
 
 const ForumPage = ({ }) => {
-    const userContext = useUserContext();
+    const {userContext } = useUserData();
 
     return userContext.authState === AuthState.LOGGED_IN ? <PersonalisedForumPage /> : <AnonymousForumPage />
 }

@@ -1,8 +1,7 @@
-import { getPostIds } from "@/lib/database";
 import { AuthState } from "@/lib/enum/AuthState";
-import { useUserContext } from "@/lib/userContext";
+import { useUserData } from "@/lib/userContext";
 import { Metadata } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const metadata: Metadata = {
     title: "Dashboard",
@@ -10,35 +9,27 @@ export const metadata: Metadata = {
 }
 
 const DashboardPage = () => {
-    const userContext = useUserContext();
+    const { userContext } = useUserData();
     
     return userContext?.authState === AuthState.LOGGED_IN ? <PersonalisedDashboardPage /> : <AnonymousDashboardPage />
 }
 
 const PersonalisedDashboardPage = ({ }) => {
-    const userContext = useUserContext();
+    const { userData } = useUserData();
+    const [postIds, setPostIds] = useState<string[]>([]);
 
     useEffect(() => {
-        if (userContext && userContext.postIds.length === 0) {
-            const getIds = async () => {
-                const { postIds } = await getPostIds({ userUId: userContext.uid });
-                userContext.setUser({
-                    postIds: [...postIds]
-                })
-            }
+        setPostIds(userData?.postIds ?? []);
+    }, [userData])
 
-            getIds();
-        }
-        
-    }, [])
 
     return (
         <main className={`flex flex-col justify-center h-screen`}>
-            <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-            <p>Personalised</p>
+            <h2 className="text-3xl font-bold tracking-tight">Personalised Dashboard</h2>
+            <p></p>
             <ul>
-                { userContext && userContext.postIds 
-                    && userContext.postIds.map((postId) => 
+                { postIds.length > 0
+                    && postIds.map((postId) => 
                         <li key={postId}>{postId}</li>
                     )
                 }

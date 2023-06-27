@@ -1,11 +1,9 @@
-import { useUserContext } from "@/lib/userContext";
-import { useRouter } from "next/router";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { useUserData } from "@/lib/userContext";
 import { AuthState } from "@/lib/enum/AuthState";
 import ProfileImageComponent from "@/components/ProfileImage";
 
 const UserProfilePage = ({ }) => {
-    const userContext = useUserContext();
+    const { userContext } = useUserData();
 
     return (
         userContext.authState === AuthState.LOGGED_IN ? <UserLoggedIn /> : <UserNotLoggedIn />
@@ -21,7 +19,7 @@ const UserNotLoggedIn = ({ }) => {
 }
 
 const UserLoggedIn = ({ }) => {
-    const userContext = useUserContext();
+    const { userContext } = useUserData();
 
     return (
         <main className={`flex flex-col justify-center items-center h-screen`}>

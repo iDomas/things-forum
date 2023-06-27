@@ -1,5 +1,5 @@
 import { AppUser } from "@/lib/model/AppUser";
-import { useUserContext } from "@/lib/userContext";
+import { useUserData } from "@/lib/userContext";
 import { NavLink } from "./Navbar";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
@@ -13,7 +13,8 @@ const AvatarComponent = ({ user } : { user: AppUser }) => {
 export default AvatarComponent;
 
 const DropdownMenuProfile = ({ user } : { user: AppUser }) => {
-    let userContext = useUserContext();
+    const { userContext } = useUserData();
+
 
     let signOut = () => {
         userContext.signOut();

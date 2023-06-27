@@ -1,30 +1,15 @@
 import { db } from "./firebase";
 import { AppUser } from "./model/AppUser";
-import { DatabaseUser } from "./model/db/DatabaseUser";
 import { DbPost, Post } from "./model/db/Post";
 import { createIdFromTitle } from "./utils";
 import { serverTimestamp } from "firebase/firestore";
 import firebase from 'firebase/compat/app';
 
-const initUser = async ({ user, userUId } : { user: DatabaseUser, userUId: string }) => {
-    if (userUId.length === 0) {
-        throw new Error("User has no userUId");
-    }
-    const ref = db.collection('users').doc(userUId); 
-    await ref.get().then((doc) => {
-        if (!doc.exists) {
-            console.log('setting user')
-            ref.set(user);
-        } else {
-            console.log('user exists')
-        }
-    })
-}
-
 const insertNewPost = ( { post, userContext } : { post: Post, userContext: AppUser }): Promise<void> => {
     const postId = createIdFromTitle(post.title);
     const dbPost: DbPost = {
         ...post,
+        id: postId,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
     }
@@ -57,6 +42,5 @@ const getPostIds = async ({ userUId } : { userUId: string }) => {
 
 export { 
     insertNewPost,
-    initUser,
-    getPostIds
+    getPostIds,
 }

@@ -1,6 +1,6 @@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { AuthState } from "@/lib/enum/AuthState";
-import { useUserContext } from "@/lib/userContext";
+import { useUserData } from "@/lib/userContext";
 import { useForm } from "react-hook-form";
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,9 +15,13 @@ import { Textarea } from "@/components/ui/textarea";
 import MarkdownComponent from "@/components/Markdown";
 
 const WriteAThingPage = ({ }) => {
-    const userContext = useUserContext();
+    const { userContext } = useUserData();
 
-    return userContext.authState === AuthState.LOGGED_IN ? <UserLoggedInComponent /> : <UserNotLoggedInComponent />
+    return (
+        userContext.authState === AuthState.LOGGED_IN 
+            ? <UserLoggedInComponent /> 
+            : <UserNotLoggedInComponent />
+    )
 }
 
 const UserLoggedInComponent = ({ }) => {
@@ -57,7 +61,7 @@ const FormSchema = z.object({
 });
 
 const FormComponent = ({ }) => {
-    const userContext = useUserContext();
+    const { userContext } = useUserData();
     const loadingContext = useLoadingContext();
     const [mdEditorValue, setMdEditorValue] = useState('');
 
@@ -95,8 +99,6 @@ const FormComponent = ({ }) => {
             })
     }
 
-    let contentRef: any = undefined;
-
     const handleFormChangeForMD = (value: string) => {
         setMdEditorValue(value)
     }
@@ -121,7 +123,6 @@ const FormComponent = ({ }) => {
                             control={form.control}
                             name={`content`}
                             render={({ field, formState, fieldState }) => {
-                                contentRef = field.value;
                                 return (
                                     <FormItem>
                                         <FormLabel>Content</FormLabel>
