@@ -45,7 +45,6 @@ const useUserData = () => {
             })
         }
 
-
         return unsubscribe;
     }, [user])
 
