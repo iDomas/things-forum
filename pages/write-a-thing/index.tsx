@@ -78,6 +78,7 @@ const FormComponent = ({ }) => {
     const onSubmit = (data: z.infer<typeof FormSchema>) => {
         loadingContext.setLoading(true)
         const post: Post = {
+            author: userContext.displayName,
             title: data.title,
             content: data.content,
             topics: []

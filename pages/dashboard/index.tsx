@@ -1,6 +1,6 @@
 import { PostCardComponent } from "@/components/PostCard";
 import { AuthState } from "@/lib/enum/AuthState";
-import { Post } from "@/lib/model/db/Post";
+import { DbPost, Post } from "@/lib/model/db/Post";
 import { useUserData } from "@/lib/userContext";
 import { usePostsData } from "@/lib/userPostsContext";
 import { Metadata } from "next";
@@ -22,7 +22,7 @@ const PersonalisedDashboardPage = ({ }) => {
     const { userData } = useUserData();
     const [postIds, setPostIds] = useState<string[]>([]);
     const { userPosts } = usePostsData();
-    const [posts, setPosts] = useState<Post[]>([]);
+    const [posts, setPosts] = useState<DbPost[]>([]);
 
     useEffect(() => {
         setPostIds(userData?.postIds ?? []);
@@ -37,7 +37,7 @@ const PersonalisedDashboardPage = ({ }) => {
         <main className={`flex h-full container m-auto`}>
             <div className={`pt-8`}>
                 <div className={`sm:px-16`}>
-                    <h2 className="text-3xl font-bold tracking-tight mb-4">Personalised <br /> Dashboard</h2>
+                    <h2 className="text-3xl font-bold tracking-tight mb-4">Personalised Dashboard</h2>
                 </div>
                 <div className={`flex flex-col items-center md:px-4 lg:px-16 xl:px-24 h-full`}>
                     <div className={`h-full`}>
@@ -55,8 +55,9 @@ const PersonalisedDashboardPage = ({ }) => {
 
 const AnonymousDashboardPage = ({ }) => {
     return (
-        <main className={`flex flex-col justify-center h-full px-4 sm:px-16 md:px-48 lg:px-60 xl:px-80`}>
+        <main className={`flex flex-col container h-full m-auto`}>
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+            <p>You must be logged in!</p>
         </main>
     )
 }

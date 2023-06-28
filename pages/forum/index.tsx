@@ -15,7 +15,7 @@ const ForumPage = ({ }) => {
 
 const PersonalisedForumPage = ({ }) => {
     return (
-        <main className={`flex flex-col justify-center h-full px-4 sm:px-16 md:px-48 lg:px-60 xl:px-80`}>
+        <main className={`container flex flex-col justify-center h-full m-auto`}>
             <h2 className="text-3xl font-bold tracking-tight">Forum</h2>
             <p>Personalised</p>
         </main>
@@ -24,7 +24,7 @@ const PersonalisedForumPage = ({ }) => {
 
 const AnonymousForumPage = ({ }) => {
     return (
-        <main className={`flex flex-col justify-center h-full px-4 sm:px-16 md:px-48 lg:px-60 xl:px-80`}>
+        <main className={`container flex flex-col justify-center h-full m-auto`}>
             <h2 className="text-3xl font-bold tracking-tight">Forum</h2>
         </main>
     )

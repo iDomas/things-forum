@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { Post } from "./model/db/Post";
+import { DbPost } from "./model/db/Post";
 import { useUserData } from "./userContext";
 import { AuthState } from "./enum/AuthState";
 import { db } from "./firebase";
+import { mapPost } from "./utils";
 
 const usePostsData = () => {
     const { userData } = useUserData();
-    const [userPosts, setUserPosts] = useState<Post[]>([]);
+    const [userPosts, setUserPosts] = useState<DbPost[]>([]);
 
     useEffect(() => {
         let unsubscribe: any;
@@ -24,16 +25,6 @@ const usePostsData = () => {
     }, [userData])
 
     return { userPosts }
-}
-
-const mapPost = (doc: any): Post => {
-    const data = doc.data();
-    return {
-        id: data.id,
-        title: data.title,
-        content: data.content,
-        topics: data.topics,
-    }
 }
 
 export { usePostsData };

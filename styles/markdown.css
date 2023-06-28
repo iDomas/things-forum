@@ -1,1 +1,7 @@
 @import url(https://esm.sh/github-markdown-css@5.2.0/github-markdown.css);
+
+.markdown-body pre code, .markdown-body pre tt {
+    display: flex;
+    width: 60vw;
+    max-width: fit-content;
+}

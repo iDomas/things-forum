@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import AvatarComponent from "./Avatar";
 import { Button } from "./ui/button";
+import { Avatar, AvatarImage } from "./ui/avatar";
 
 const NavLink = ({ to, linkText, children }:  { to: string, linkText?: string, children?: any }) => {
     return (
@@ -38,8 +39,16 @@ const MobileNav = ({ open, setOpen, user }:  { open: any, setOpen: any, user: Ap
             <div className="flex flex-col ml-4 h-50">
                 <div className={`flex justify-center items-center mt-8`} >
                     { user && user.authState === AuthState.LOGGED_IN && (
-                            <AvatarComponent user={user} />
-                        )
+                        <Link href={`/${user.uid}`} onClick={close}>
+                            <Avatar >
+                            { 
+                                user && user.photoURL && (
+                                    <AvatarImage src={user.photoURL}></AvatarImage>
+                                ) 
+                            }
+                            </Avatar>
+                        </Link>
+                    )
                     }
                 </div>
                 { user && user.authState === AuthState.LOGGED_IN && (
@@ -50,12 +59,15 @@ const MobileNav = ({ open, setOpen, user }:  { open: any, setOpen: any, user: Ap
                         </Link>
                     )
                 }
-                <Link href={"/dashboard"} className={`my-2`}  onClick={close}>
-                    <span className="text-2xl font-light my-4">
-                        Dashboard
-                    </span>
-                </Link>
-                <Link href={"/Forum"} className={`my-2`}  onClick={close}>
+                { user && user.authState === AuthState.LOGGED_IN && (
+                        <Link href={"/dashboard"} className={`my-2`}  onClick={close}>
+                            <span className="text-2xl font-light my-4">
+                                Dashboard
+                            </span>
+                        </Link>
+                    )
+                }
+                <Link href={"/forum"} className={`my-2`}  onClick={close}>
                     <span className="text-2xl font-light my-4">
                         Forum
                     </span>
@@ -65,6 +77,15 @@ const MobileNav = ({ open, setOpen, user }:  { open: any, setOpen: any, user: Ap
                     <Link href={"/login"} className={`my-2`}  onClick={close}>
                         <span className="text-2xl font-light my-4">
                             Login/Sign Up
+                        </span>
+                    </Link>                    
+                    )
+                }
+
+                { user?.authState === AuthState.LOGGED_IN && (
+                    <Link href={`/login`} className={`my-2`}  onClick={close}>
+                        <span className="text-2xl font-light my-4">
+                            Sign Out
                         </span>
                     </Link>                    
                     )

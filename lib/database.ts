@@ -10,6 +10,7 @@ const insertNewPost = ( { post, userContext } : { post: Post, userContext: AppUs
     const dbPost: DbPost = {
         ...post,
         id: postId,
+        author: userContext.displayName || 'Unknown',
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
     }
