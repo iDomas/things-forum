@@ -13,29 +13,15 @@ export const metadata: Metadata = {
 }
 
 const ForumPage = ({ }) => {
-    const { userContext } = useUserData();
-
-    return userContext.authState === AuthState.LOGGED_IN ? <PersonalisedForumPage /> : <AnonymousForumPage />
+    return <ForumComponent />
 }
 
-const PersonalisedForumPage = ({ }) => {
+const ForumComponent = ({ }) => {
     return (
         <main className={`container flex justify-center h-full m-auto`}>
             <div className={`flex flex-col items-center md:px-4 lg:px-16 xl:px-24 h-full w-full`}>
-                <h2 className="text-3xl font-bold tracking-tight">Forum</h2>
+                <h2 className="text-3xl font-bold tracking-tight py-4">Forum</h2>
                 <PostComponent />
-            </div>
-        </main>
-    )
-}
-
-const AnonymousForumPage = ({ }) => {
-    
-    return (
-        <main className={`container flex justify-center h-full m-auto`}>
-            <div className={`flex flex-col`}>
-                <h2 className="text-3xl font-bold tracking-tight">Forum</h2>
-                <p>latest posts</p>
             </div>
         </main>
     )

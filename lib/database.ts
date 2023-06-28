@@ -16,11 +16,10 @@ const insertNewUser = ( { userContext } : { userContext: AppUser }) => {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
     }
-    userRef.set(newUser).then(() => {
-        console.log("User successfully written!");
-    }).catch((error) => {
-        console.error("Error adding document: ", error);
-    });
+    userRef.set(newUser)
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+        });
 }
 
 
