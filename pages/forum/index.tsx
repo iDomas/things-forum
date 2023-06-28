@@ -21,7 +21,7 @@ const ForumPage = ({ }) => {
 const PersonalisedForumPage = ({ }) => {
     return (
         <main className={`container flex justify-center h-full m-auto`}>
-            <div className={`flex flex-col`}>
+            <div className={`flex flex-col items-center md:px-4 lg:px-16 xl:px-24 h-full w-full`}>
                 <h2 className="text-3xl font-bold tracking-tight">Forum</h2>
                 <PostComponent />
             </div>
@@ -42,35 +42,29 @@ const AnonymousForumPage = ({ }) => {
 }
 
 const PostComponent = ({ }) => {
-    const { userData } = useUserData();
     const [posts, setPosts] = useState<DbPost[]>([]);
 
     useEffect(() => {
         let unsubscribe: any;
 
         const fetchPosts = async () => {
-            unsubscribe = db.collection('/posts/')
+            unsubscribe = db.collection('/posts')
                 .orderBy('createdAt', 'desc')
                 .limit(10)
                 .onSnapshot((snapshot) => {
-                    const psots = snapshot.docs.map(mapPost);
+                    const posts = snapshot.docs.map(mapPost);
                     setPosts(posts);
             })
         }
 
         fetchPosts();
         return unsubscribe;
-    }, [posts])
+    }, [])
 
-    return (
-        <div>
-            { posts.length > 0
+    return posts.length > 0
                 && posts.map((post) => 
                     <PostCardComponent key={post.id} post={post}/>
                 )
-            }
-        </div>
-    )
 }
 
 export default ForumPage;

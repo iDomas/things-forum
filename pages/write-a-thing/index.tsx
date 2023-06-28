@@ -98,7 +98,6 @@ const FormComponent = ({ }) => {
                     title: "Error!",
                     description: "Your post could not be submitted.",
                 })
-                console.log(error)
             }).finally(() => {
                 loadingContext.setLoading(false)
             })

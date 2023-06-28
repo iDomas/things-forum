@@ -35,36 +35,36 @@ const PersonalisedDashboardPage = ({ }) => {
 
     return (
         <main className={`flex flex-col items-center container m-auto`}>
-                <div className={`sm:px-16`}>
-                    <h2 className="text-3xl font-bold tracking-tight mb-4">Personalised Dashboard</h2>
-                </div>
-                <div className={`flex flex-col items-center md:px-4 lg:px-16 xl:px-24 h-full w-full`}>
-                    { posts.length !== 0 && (
-                        <>
-                            { posts.length > 0
-                                && posts.map((post) => 
-                                    <PostCardComponent key={post.id} post={post}/>
-                                )
-                            }
-                            { posts.length % 5 === 0 && (
-                                <div className={`py-4`}>
-                                    <Button
-                                        onClick={loadMore}>
-                                            Load more
-                                    </Button>
-                                </div>
-                            )}
-                            { posts.length % 5 !== 0 && (
-                                <p>No more posts!</p>
-                            )}
-                        </>
-                    )}
-                    { posts.length === 0 && (
-                        <>
-                            <p>You have no posts!</p>
-                        </>
-                    )}
-                </div>
+            <div className={`sm:px-16`}>
+                <h2 className="text-3xl font-bold tracking-tight mb-4">Personalised Dashboard</h2>
+            </div>
+            <div className={`flex flex-col items-center md:px-4 lg:px-16 xl:px-24 h-full w-full`}>
+                { posts.length !== 0 && (
+                    <>
+                        { posts.length > 0
+                            && posts.map((post) => 
+                                <PostCardComponent key={post.id} post={post}/>
+                            )
+                        }
+                        { posts.length % 5 === 0 && (
+                            <div className={`py-4`}>
+                                <Button
+                                    onClick={loadMore}>
+                                        Load more
+                                </Button>
+                            </div>
+                        )}
+                        { posts.length % 5 !== 0 && (
+                            <p>No more posts!</p>
+                        )}
+                    </>
+                )}
+                { posts.length === 0 && (
+                    <>
+                        <p>You have no posts!</p>
+                    </>
+                )}
+            </div>
         </main>
     )
 }

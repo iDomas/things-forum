@@ -68,8 +68,6 @@ const setPostIds = ({ userContext, doc } : { userContext: AppUser, doc: any }) =
 
 
 const resetUser = (): UserDetails => {
-    console.log('resetUser');
-    
     return {
         firebaseUser: undefined,
         displayName: '',

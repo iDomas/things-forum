@@ -1,7 +1,6 @@
 import MarkdownComponent from "@/components/Markdown";
 import { db } from "@/lib/firebase";
 import { DbPost } from "@/lib/model/db/Post";
-import { useUserData } from "@/lib/userContext";
 import { mapPost, millisToDateString } from "@/lib/utils";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -9,21 +8,25 @@ import { useEffect, useState } from "react";
 const PostPage = ({ }) => {
     const { query } = useRouter();
     const [post, setPost] = useState<DbPost>();
-    const { userContext } = useUserData();
 
     useEffect(() => {
         const retirevePost = async () => {
-            if (query.postId && userContext.uid) {
-                // fetch post
-                const postDoc = await db.collection(`/posts/user/${userContext.uid}`).doc(query.postId as string).get();  
-                if (postDoc.exists) {
-                    setPost(mapPost(postDoc));
+            // fetch post
+            if (query.postId === undefined) return;
+            const postDoc = db.collection(`/posts`)
+                .where('id', '==', query.postId)
+                .limit(1);
+            
+            postDoc.onSnapshot((snapshot) => {
+                if (snapshot.docs.length === 1) {
+                    const post = snapshot.docs.map(mapPost)[0];
+                    setPost(post);
                 }
-            }
+            })
         }
 
         retirevePost();
-    }, [query.postId, userContext.uid])
+    }, [])
 
     return (
         <main className={`flex flex-col h-full w-full container mx-auto justify-center`}>

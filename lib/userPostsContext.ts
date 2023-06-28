@@ -38,8 +38,6 @@ const usePostsData = (
                     setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
                     const posts = querySnapshot.docs.map((doc) => mapPost(doc));
                     setUserPosts(posts);
-                    
-                    console.log('initial pagination');
                 })
                 return unsubscribe;
             }
@@ -54,7 +52,6 @@ const usePostsData = (
                     const posts = nextQuerySnapshot.docs.map((doc) => mapPost(doc));
                     setLastVisible(nextQuerySnapshot.docs[nextQuerySnapshot.docs.length - 1]);
                     setUserPosts([...userPosts, ...posts]);
-                    console.log('next pagination');
                 })
             }
         }
