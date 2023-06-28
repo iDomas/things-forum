@@ -5,7 +5,6 @@ import { AuthState } from "./enum/AuthState";
 import { db } from "./firebase";
 import { mapPost } from "./utils";
 import { PostLoadType } from "./enum/PostLoadType";
-import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
 const usePostsData = (
         { postLoadType } : { postLoadType: PostLoadType }
@@ -30,8 +29,11 @@ const usePostsData = (
                 return;
             }
             if (PostLoadType.INITIAL === postLoadType && !lastVisible) {
-                const postsRef = db.collection(`posts/user/${userData.uid}`);
-                const firstQuery = postsRef.orderBy('createdAt', 'desc').limit(5);
+                const postsRef = db.collection(`posts`);
+                const firstQuery = postsRef
+                    .where('authorUid', '==', userData.uid)
+                    .orderBy('createdAt', 'desc')
+                    .limit(5);
                 unsubscribe = firstQuery.onSnapshot((querySnapshot) => {        
                     setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
                     const posts = querySnapshot.docs.map((doc) => mapPost(doc));
@@ -43,6 +45,7 @@ const usePostsData = (
             }
             if (PostLoadType.LOAD === postLoadType && lastVisible) {
                 let next = db.collection(`posts/user/${userData.uid}`)
+                    .where('authorUid', '==', userData.uid)
                     .orderBy('createdAt', 'desc')
                     .startAfter(lastVisible)
                     .limit(5);

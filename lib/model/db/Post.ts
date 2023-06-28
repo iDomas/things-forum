@@ -10,5 +10,6 @@ export interface Post {
     title: string;
     content: string;
     author: string;
+    authorUid: string;
     topics: string[];
 }

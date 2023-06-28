@@ -31,7 +31,8 @@ const mapPost = (doc: any): DbPost => {
       title: data.title,
       content: data.content,
       topics: data.topics,
-      author: data.author || 'Unknown',
+      author: data.author,
+      authorUid: data.authorUid,
       createdAt: data.createdAt.toMillis(),
       updatedAt: data.updatedAt.toMillis()
   }

@@ -29,21 +29,24 @@ const insertNewPost = ( { post, userContext } : { post: Post, userContext: AppUs
     const dbPost: DbPost = {
         ...post,
         id: postId,
-        author: userContext.displayName || 'Unknown',
+        author: userContext.displayName,
+        authorUid: userContext.uid,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
     }
 
-    let batch = db.batch();
-    const postsRef = db.collection(`posts/user/${userContext.uid}`).doc(postId);
-    batch.set(postsRef, dbPost);
+    return db.runTransaction((transaction: any) => {
+        const userRef = db.collection('/users').doc(userContext.uid);
+        return transaction.get(userRef as any).then((doc: any) => {
+            if (doc.exists) {
+                db.collection(`posts`).add(dbPost);
 
-    const userRef = db.collection("users").doc(userContext.uid);
-    batch.update(userRef, {
-        postIds: firebase.firestore.FieldValue.arrayUnion(postId),
-    });
-
-    return batch.commit();
+                transaction.update(userRef as any, {
+                    postIds: firebase.firestore.FieldValue.arrayUnion(postId),
+                });
+            }
+        })
+    })
 }
 
 const getPostIds = async ({ userUId } : { userUId: string }) => {

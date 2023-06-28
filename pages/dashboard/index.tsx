@@ -1,6 +1,6 @@
 import { PostCardComponent } from "@/components/PostCard";
 import { AuthState } from "@/lib/enum/AuthState";
-import { DbPost, Post } from "@/lib/model/db/Post";
+import { DbPost } from "@/lib/model/db/Post";
 import { useUserData } from "@/lib/userContext";
 import { usePostsData } from "@/lib/userPostsContext";
 import { Metadata } from "next";
@@ -21,16 +21,9 @@ const DashboardPage = () => {
 }
 
 const PersonalisedDashboardPage = ({ }) => {
-    const { userData } = useUserData();
-    const [postIds, setPostIds] = useState<string[]>([]);
     const [postLoadType, setPostLoadType] = useState<PostLoadType>(PostLoadType.INITIAL);
     const { userPosts } = usePostsData({ postLoadType });
     const [posts, setPosts] = useState<DbPost[]>([]);
-
-
-    useEffect(() => {
-        setPostIds(userData?.postIds ?? []);
-    }, [userData])
 
     useEffect(() => {
         setPosts(userPosts);
@@ -41,27 +34,29 @@ const PersonalisedDashboardPage = ({ }) => {
     }
 
     return (
-        <main className={`flex justify-center container m-auto`}>
-            <div className={`pt-8`}>
+        <main className={`flex flex-col items-center container m-auto`}>
                 <div className={`sm:px-16`}>
                     <h2 className="text-3xl font-bold tracking-tight mb-4">Personalised Dashboard</h2>
                 </div>
-                <div className={`flex flex-col items-center md:px-4 lg:px-16 xl:px-24 h-full`}>
+                <div className={`flex flex-col items-center md:px-4 lg:px-16 xl:px-24 h-full w-full`}>
                     { posts.length !== 0 && (
                         <>
-                            <div>
-                                { posts.length > 0
-                                    && posts.map((post) => 
-                                        <PostCardComponent key={post.id} post={post}/>
-                                    )
-                                }
-                            </div>
-                            <div className={`py-4`}>
-                                <Button
-                                    onClick={loadMore}>
-                                        Load more
-                                </Button>
-                            </div>
+                            { posts.length > 0
+                                && posts.map((post) => 
+                                    <PostCardComponent key={post.id} post={post}/>
+                                )
+                            }
+                            { posts.length % 5 === 0 && (
+                                <div className={`py-4`}>
+                                    <Button
+                                        onClick={loadMore}>
+                                            Load more
+                                    </Button>
+                                </div>
+                            )}
+                            { posts.length % 5 !== 0 && (
+                                <p>No more posts!</p>
+                            )}
                         </>
                     )}
                     { posts.length === 0 && (
@@ -70,7 +65,6 @@ const PersonalisedDashboardPage = ({ }) => {
                         </>
                     )}
                 </div>
-            </div>
         </main>
     )
 }
