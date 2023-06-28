@@ -4,6 +4,25 @@ import { DbPost, Post } from "./model/db/Post";
 import { createIdFromTitle } from "./utils";
 import { serverTimestamp } from "firebase/firestore";
 import firebase from 'firebase/compat/app';
+import { DatabaseUser } from "./model/db/DatabaseUser";
+
+const insertNewUser = ( { userContext } : { userContext: AppUser }) => {
+    const userRef = db.collection("users").doc(userContext.uid);
+    const newUser: DatabaseUser = {
+        uid: userContext.uid,
+        displayName: userContext.displayName,
+        photoURL: userContext.photoURL,
+        postIds: [],
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+    }
+    userRef.set(newUser).then(() => {
+        console.log("User successfully written!");
+    }).catch((error) => {
+        console.error("Error adding document: ", error);
+    });
+}
+
 
 const insertNewPost = ( { post, userContext } : { post: Post, userContext: AppUser }): Promise<void> => {
     const postId = createIdFromTitle(post.title);
@@ -42,6 +61,7 @@ const getPostIds = async ({ userUId } : { userUId: string }) => {
 }
 
 export { 
+    insertNewUser,
     insertNewPost,
     getPostIds,
 }

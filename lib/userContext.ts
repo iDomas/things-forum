@@ -5,6 +5,7 @@ import { AppUser, UserDetails } from "./model/AppUser";
 import { useEffect, useState } from "react";
 import { auth, db } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { insertNewUser } from "./database";
 
 const useUserData = () => {
     const [user] = useAuthState(auth as any);
@@ -36,11 +37,10 @@ const useUserData = () => {
         if (user) {
             const ref = db.collection('users').doc(user.uid);
             unsubscribe = ref.onSnapshot((doc) => {
-                if (userContext) {
-                    const { postIds } = doc.data() as any;
-                    userContext.setUser({
-                        postIds: [...postIds]
-                    })
+                if (doc.exists) {
+                    setPostIds({ userContext, doc });
+                } else {
+                    insertNewUser({ userContext });
                 }
             })
         }
@@ -51,6 +51,20 @@ const useUserData = () => {
     return { userContext, userData }
 }
 
+const setPostIds = ({ userContext, doc } : { userContext: AppUser, doc: any }) => {
+    if (userContext) {
+        const { postIds } = doc?.data() as any;
+        if (!postIds) {
+            userContext.setUser({
+                postIds: [...postIds]
+            })
+        } else {
+            userContext.setUser({
+                postIds: []
+            })
+        }
+    }
+}
 
 
 const resetUser = (): UserDetails => {

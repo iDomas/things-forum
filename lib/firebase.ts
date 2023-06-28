@@ -3,7 +3,8 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/functions';
 import 'firebase/compat/storage';
-import { firebaseConfig } from '@/lib/loadEnvVars';
+import { firebaseConfig } from './LoadEnvVars';
+
 
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);

@@ -6,6 +6,8 @@ import { usePostsData } from "@/lib/userPostsContext";
 import { Metadata } from "next";
 import { useEffect, useState } from "react";
 import '@/styles/scrollbar.css'
+import { Button } from "@/components/ui/button";
+import { PostLoadType } from "@/lib/enum/PostLoadType";
 
 export const metadata: Metadata = {
     title: "Dashboard",
@@ -21,8 +23,10 @@ const DashboardPage = () => {
 const PersonalisedDashboardPage = ({ }) => {
     const { userData } = useUserData();
     const [postIds, setPostIds] = useState<string[]>([]);
-    const { userPosts } = usePostsData();
+    const [postLoadType, setPostLoadType] = useState<PostLoadType>(PostLoadType.INITIAL);
+    const { userPosts } = usePostsData({ postLoadType });
     const [posts, setPosts] = useState<DbPost[]>([]);
+
 
     useEffect(() => {
         setPostIds(userData?.postIds ?? []);
@@ -32,21 +36,39 @@ const PersonalisedDashboardPage = ({ }) => {
         setPosts(userPosts);
     }, [userPosts, posts])
 
+    const loadMore = () => {
+        setPostLoadType(PostLoadType.LOAD);
+    }
 
     return (
-        <main className={`flex h-full container m-auto`}>
+        <main className={`flex justify-center container m-auto`}>
             <div className={`pt-8`}>
                 <div className={`sm:px-16`}>
                     <h2 className="text-3xl font-bold tracking-tight mb-4">Personalised Dashboard</h2>
                 </div>
                 <div className={`flex flex-col items-center md:px-4 lg:px-16 xl:px-24 h-full`}>
-                    <div className={`h-full`}>
-                        { posts.length > 0
-                            && posts.map((post) => 
-                                <PostCardComponent key={post.id} post={post}/>
-                            )
-                        }
-                    </div>
+                    { posts.length !== 0 && (
+                        <>
+                            <div>
+                                { posts.length > 0
+                                    && posts.map((post) => 
+                                        <PostCardComponent key={post.id} post={post}/>
+                                    )
+                                }
+                            </div>
+                            <div className={`py-4`}>
+                                <Button
+                                    onClick={loadMore}>
+                                        Load more
+                                </Button>
+                            </div>
+                        </>
+                    )}
+                    { posts.length === 0 && (
+                        <>
+                            <p>You have no posts!</p>
+                        </>
+                    )}
                 </div>
             </div>
         </main>
