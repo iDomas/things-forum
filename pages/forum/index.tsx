@@ -1,8 +1,6 @@
 import { PostCardComponent } from "@/components/PostCard";
-import { AuthState } from "@/lib/enum/AuthState";
 import { db } from "@/lib/firebase";
 import { DbPost } from "@/lib/model/db/Post";
-import { useUserData } from "@/lib/userContext";
 import { mapPost } from "@/lib/utils";
 import { Metadata } from "next";
 import { useEffect, useState } from "react";

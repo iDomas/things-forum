@@ -11,18 +11,35 @@ const NavLink = ({ to, linkText, children }:  { to: string, linkText?: string, c
         <>
             {
                 linkText && !children && (
-                    <Link href={to} className={`mx-4`}>
+                    <Link href={to} className={`text-slate-400 mx-4 transition duration-300 ease-in-out hover:scale-110 hover:text-slate-700 active:text-amber-500`}>
                         { linkText }
                     </Link>
                 )
             }
             {
                 !linkText && children && (
-                    <Link href={to}>
+                    <Link href={to} className={`transition duration-300 ease-in-out hover:scale-110`}>
                         { children }
                     </Link>
                 )
             }
+        </>
+    )
+}
+
+const MobileNavLink = ({ to, close, className, linkText, children } : { to: string, close: any, className?: any, linkText?: string, children?: any }) => {
+    return (
+        <>
+            { !linkText && children && (
+                <Link href={to} onClick={close} className={className}>
+                    {children}
+                </Link>
+            )}
+            { linkText && !children && (
+                <Link href={to} onClick={close} className={`text-2xl font-light my-2 active:text-amber-500`} >
+                    {linkText}
+                </Link>
+            )}
         </>
     )
 }
@@ -33,13 +50,13 @@ const MobileNav = ({ open, setOpen, user }:  { open: any, setOpen: any, user: Ap
         <div className={`absolute top-0 left-0 h-screen w-screen bg-white transform ${open ? "-translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out filter drop-shadow-md`}>
             <div className="flex items-center justify-center filter drop-shadow-md bg-white h-20">
                 <Link href={"/"} onClick={close}>
-                    <span className="text-2xl font-semi-bold">THINGS</span>
+                    <span className={`text-2xl font-bold text-slate-600`}>THINGS</span>
                 </Link>
             </div>
             <div className="flex flex-col ml-4 h-50">
                 <div className={`flex justify-center items-center mt-8`} >
                     { user && user.authState === AuthState.LOGGED_IN && (
-                        <Link href={`/${user.uid}`} onClick={close}>
+                        <MobileNavLink to={`/${user.uid}`} close={close}>
                             <Avatar >
                             { 
                                 user && user.photoURL && (
@@ -47,49 +64,47 @@ const MobileNav = ({ open, setOpen, user }:  { open: any, setOpen: any, user: Ap
                                 ) 
                             }
                             </Avatar>
-                        </Link>
+                        </MobileNavLink>
                     )
                     }
                 </div>
                 { user && user.authState === AuthState.LOGGED_IN && (
-                        <Link href={"/write-a-thing"} className={`my-2`}  onClick={close}>
-                            <span className="text-2xl font-light my-4">
-                                Write A Thing
-                            </span>
-                        </Link>
+                        <MobileNavLink 
+                            to={"/write-a-thing"} 
+                            linkText={`Write A Thing`} 
+                            close={close}>
+                        </MobileNavLink>
                     )
                 }
                 { user && user.authState === AuthState.LOGGED_IN && (
-                        <Link href={"/dashboard"} className={`my-2`}  onClick={close}>
-                            <span className="text-2xl font-light my-4">
-                                Dashboard
-                            </span>
-                        </Link>
+                        <MobileNavLink 
+                            to={"/dashboard"} 
+                            close={close}
+                            linkText={`Dashboard`}>
+                        </MobileNavLink>
                     )
                 }
-                <Link href={"/forum"} className={`my-2`}  onClick={close}>
-                    <span className="text-2xl font-light my-4">
-                        Forum
-                    </span>
-                </Link>
+                <MobileNavLink 
+                    to={"/forum"} 
+                    close={close}
+                    linkText={`Forum`}>
+                </MobileNavLink>
 
-                { user?.authState === AuthState.LOGGED_OUT && (
-                    <Link href={"/login"} className={`my-2`}  onClick={close}>
-                        <span className="text-2xl font-light my-4">
-                            Login/Sign Up
-                        </span>
-                    </Link>                    
-                    )
-                }
+                { user?.authState === AuthState.LOGGED_OUT && ( 
+                    <MobileNavLink 
+                        to={"/login"} 
+                        close={close}
+                        linkText={`Login / Sign Up`}>
+                    </MobileNavLink>                 
+                )}
 
-                { user?.authState === AuthState.LOGGED_IN && (
-                    <Link href={`/login`} className={`my-2`}  onClick={close}>
-                        <span className="text-2xl font-light my-4">
-                            Sign Out
-                        </span>
-                    </Link>                    
-                    )
-                }
+                { user?.authState === AuthState.LOGGED_IN && (   
+                    <MobileNavLink 
+                        to={"/login"} 
+                        close={close}
+                        linkText={`Sign Out`}>
+                    </MobileNavLink>                 
+                )}
             </div>
         </div>
     )
@@ -102,9 +117,9 @@ const Navbar = ({ user } : { user: AppUser | undefined }) => {
     return (
         <nav className={`absolute w-full flex filter drop-shadow-md bg-white px-4 py-4 h-20 items-center`}>
             <MobileNav open={open} user={user} setOpen={setOpen}/>
-            <div className="w-3/12 flex items-center">
-                <Link href={"/"}>
-                    <span className="text-xl font-semi-bold">THINGS</span>
+            <div className="w-3/12 flex items-center justify-center">
+                <Link href={"/"} className={`transition duration-300 ease-in-out hover:scale-110`}>
+                    <span className="text-xl font-bold">THINGS</span>
                 </Link>
             </div>
             <div className={`w-9/12 flex justify-end items-center`}>
@@ -118,19 +133,21 @@ const Navbar = ({ user } : { user: AppUser | undefined }) => {
                 </div>
 
                 <div className="hidden md:flex items-center">
-                    { user && user.authState === AuthState.LOGGED_IN && (
-                            <NavLink to="/write-a-thing" linkText={`Write a Thing`}></NavLink>
-                        )
-                    }
+                    <NavLink to="/forum" linkText='Forum'></NavLink>
                     { user && user.authState === AuthState.LOGGED_IN && (
                         <NavLink to="/dashboard" linkText={`Dashboard`}></NavLink>
                         )
                     }
+                    { user && user.authState === AuthState.LOGGED_IN && (
+                            <NavLink to="/write-a-thing" linkText={`Write a Thing`}></NavLink>
+                        )
+                    }
                     
-                    <NavLink to="/forum" linkText='Forum'></NavLink>
                     <span className="mx-4"></span>
                     { user && user.authState === AuthState.LOGGED_IN && (
-                            <AvatarComponent user={user} />
+                            <div className={`transition duration-300 ease-in-out hover:scale-110`}>
+                                <AvatarComponent user={user} />
+                            </div>
                         )
                     }
                     { user?.authState === AuthState.LOGGED_OUT && (
