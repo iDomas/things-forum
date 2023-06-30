@@ -115,50 +115,52 @@ const Navbar = ({ user } : { user: AppUser | undefined }) => {
     const [open, setOpen] = useState(false);
 
     return (
-        <nav className={`absolute w-full flex filter drop-shadow-md bg-white px-4 py-4 h-20 items-center`}>
-            <MobileNav open={open} user={user} setOpen={setOpen}/>
-            <div className="w-3/12 flex items-center justify-center">
-                <Link href={"/"} className={`transition duration-300 ease-in-out hover:scale-110`}>
-                    <span className="text-xl font-bold">THINGS</span>
-                </Link>
-            </div>
-            <div className={`w-9/12 flex justify-end items-center`}>
-                <div className="z-50 flex relative w-8 h-8 flex-col justify-between items-center md:hidden" onClick={() => {
-                    setOpen(!open)
-                }}>
-                    {/* hamburger button */}
-                    <span className={`h-1 w-full bg-black rounded-lg transform transition duration-300 ease-in-out ${open ? "rotate-45 translate-y-3.5" : ""}`} />
-                    <span className={`h-1 w-full bg-black rounded-lg transition-all duration-300 ease-in-out ${open ? "w-0" : "w-full"}`} />
-                    <span className={`h-1 w-full bg-black rounded-lg transform transition duration-300 ease-in-out ${open ? "-rotate-45 -translate-y-3.5" : ""}`} />
+        <header>
+            <nav className={`absolute w-full flex filter drop-shadow-md bg-white px-4 py-4 h-20 items-center`}>
+                <MobileNav open={open} user={user} setOpen={setOpen}/>
+                <div className="w-3/12 flex items-center justify-center">
+                    <Link href={"/"} className={`transition duration-300 ease-in-out hover:scale-110`}>
+                        <span className="text-xl font-bold">THINGS</span>
+                    </Link>
                 </div>
+                <div className={`w-9/12 flex justify-end items-center`}>
+                    <div className="z-50 flex relative w-8 h-8 flex-col justify-between items-center md:hidden" onClick={() => {
+                        setOpen(!open)
+                    }}>
+                        {/* hamburger button */}
+                        <span className={`h-1 w-full bg-black rounded-lg transform transition duration-300 ease-in-out ${open ? "rotate-45 translate-y-3.5" : ""}`} />
+                        <span className={`h-1 w-full bg-black rounded-lg transition-all duration-300 ease-in-out ${open ? "w-0" : "w-full"}`} />
+                        <span className={`h-1 w-full bg-black rounded-lg transform transition duration-300 ease-in-out ${open ? "-rotate-45 -translate-y-3.5" : ""}`} />
+                    </div>
 
-                <div className="hidden md:flex items-center">
-                    <NavLink to="/forum" linkText='Forum'></NavLink>
-                    { user && user.authState === AuthState.LOGGED_IN && (
-                        <NavLink to="/dashboard" linkText={`Dashboard`}></NavLink>
-                        )
-                    }
-                    { user && user.authState === AuthState.LOGGED_IN && (
-                            <NavLink to="/write-a-thing" linkText={`Write a Thing`}></NavLink>
-                        )
-                    }
-                    
-                    <span className="mx-4"></span>
-                    { user && user.authState === AuthState.LOGGED_IN && (
-                            <div className={`transition duration-300 ease-in-out hover:scale-110`}>
-                                <AvatarComponent user={user} />
-                            </div>
-                        )
-                    }
-                    { user?.authState === AuthState.LOGGED_OUT && (
-                            <NavLink to={`/login`}>
-                                <Button>Login / Sign Up</Button>
-                            </NavLink>                        
-                        )
-                    }
+                    <div className="hidden md:flex items-center">
+                        <NavLink to="/forum" linkText='Forum'></NavLink>
+                        { user && user.authState === AuthState.LOGGED_IN && (
+                            <NavLink to="/dashboard" linkText={`Dashboard`}></NavLink>
+                            )
+                        }
+                        { user && user.authState === AuthState.LOGGED_IN && (
+                                <NavLink to="/write-a-thing" linkText={`Write a Thing`}></NavLink>
+                            )
+                        }
+                        
+                        <span className="mx-4"></span>
+                        { user && user.authState === AuthState.LOGGED_IN && (
+                                <div className={`transition duration-300 ease-in-out hover:scale-110`}>
+                                    <AvatarComponent user={user} />
+                                </div>
+                            )
+                        }
+                        { user?.authState === AuthState.LOGGED_OUT && (
+                                <NavLink to={`/login`}>
+                                    <Button>Login / Sign Up</Button>
+                                </NavLink>                        
+                            )
+                        }
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </header>
     )
 }
 

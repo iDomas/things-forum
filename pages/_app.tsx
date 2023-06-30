@@ -4,6 +4,7 @@ import '@/styles/globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import LoadingComponent from '@/components/util/loadingComponent';
 import { Metadata } from 'next';
+import FooterComponent from '@/components/Footer';
 
 export const metadata: Metadata = {
     title: "Things Forum",
@@ -24,6 +25,7 @@ const Root = ({ Component, children } : { Component: any, children: any }) => {
                         <Toaster />
                     </span>
                 </div>
+                <FooterComponent />
             </div>
         </>
     )
