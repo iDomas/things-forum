@@ -6,7 +6,7 @@ import { db } from "./firebase";
 import { mapPost } from "./utils";
 import { PostLoadType } from "./enum/PostLoadType";
 
-const usePostsData = (
+const useUserDashboardPostsData = (
         { postLoadType } : { postLoadType: PostLoadType }
     ) => {
     const { userData } = useUserData();
@@ -62,4 +62,4 @@ const usePostsData = (
     return { userPosts }
 }
 
-export { usePostsData };
+export { useUserDashboardPostsData as usePostsData };

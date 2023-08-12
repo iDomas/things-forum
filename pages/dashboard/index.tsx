@@ -2,7 +2,7 @@ import { PostCardComponent } from "@/components/PostCard";
 import { AuthState } from "@/lib/enum/AuthState";
 import { DbPost } from "@/lib/model/db/Post";
 import { useUserData } from "@/lib/userContext";
-import { usePostsData } from "@/lib/userPostsContext";
+import { usePostsData } from "@/lib/userUserDashboardContext";
 import { Metadata } from "next";
 import { useEffect, useState } from "react";
 import '@/styles/scrollbar.css'
